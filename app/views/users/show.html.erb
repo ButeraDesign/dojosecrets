@@ -1,0 +1,60 @@
+<br>
+<div class = "container">
+
+  <div class = "row">
+    <div class="col-md-9">
+    </div>
+    <div class="col-md-3">
+      <form class="table well" action="/sessions/<%=(session[:user_id])%>" method='post'>
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="_method" value="delete">
+        <input type='submit' value='Logoff' />
+      </form>
+    </div>
+  </div>
+
+    <div class = "row">
+      <div class="col-md-12  well">
+        <h1>User: <%= @user.name %></h1>
+        <% if flash[:errors] %>
+        	<% flash[:errors].each do |e| %>
+        		<p><%= e %></p>
+        	<% end %>
+        <% end %>
+        <form class="table well" action='/secrets/' method='post'>
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          New Secret:<br><textarea name='content'></textarea><br>
+          <input type='submit' value='Create Secret' />
+        </form>
+    </div>
+    <div class = "row">
+      <div class="col-md-6">
+        <h3>My Secrets </h3>
+
+        <% @mySecrets.each do |secret| %>
+
+              <form class="table" action="/secrets/<%=(session[:user_id])%>" method='post'>
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <input type="hidden" name="_method" value="delete">
+                <label><%= secret.content %></label>
+                <input type='submit' value='Delete' /><br>
+                <span><%= secret.likes.count %> likes</span>
+              </form>
+          <!--    <%= link_to "Delete", secret, :method => :delete %> -->
+              <br>
+        <%end%>
+
+      </div>
+      <div class="col-md-6">
+        <h3>My Liked Secrets</h3>
+        <% @secretsLiked.each do |secret| %>
+          <%= secret.content %><br>
+          <span><%= secret.likes.count %> likes</span>            
+        <%end%>
+      </div>
+    </div>
+
+
+   </div>
+
+</div> <!-- end container ->
